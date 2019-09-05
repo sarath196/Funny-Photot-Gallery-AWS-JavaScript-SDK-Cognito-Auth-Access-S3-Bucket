@@ -307,6 +307,7 @@ function signupForm() {
 						<div class="form-group">\
 							<label for="password" class="text-info">Password:</label><br>\
 							<input type="password" required name="password" id="password" class="form-control">\
+							<p style="font-size:10pt; color:#63778a;">must have at least 8 characters, one uppercase, number and special characters</p>\
 						</div>\
 						<div class="form-group">\
 							<label for="email" class="text-info">Email:</label><br>\
