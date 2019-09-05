@@ -103,7 +103,7 @@ function viewAlbum(albumName) {
 				</div>',
             ]);
         });
-		console.log(photos)
+		
         var message = photos.length ?
             '' :
             '<p>There are no photos in this album.</p>';
@@ -118,6 +118,16 @@ function viewAlbum(albumName) {
 			<label class="custom-file-label" for="customFile">Choose file</label>\
 			</div>\
 			<button id="addphoto" class="btn" title="Add Photos" onclick="addPhoto(\'' + albumName + '\')">Add Photos</button>\
+			</div>\
+			</div>\
+			<div  id="success-alert" class="alert alert-success container" style="display:none">\
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\
+			<span id="success-content"></span>\
+			</div>\
+			<div class="container" id="progress-id" style="display:none">\
+			<h3>Uploading: <span id="progress-content"></span></h3>\
+			<div class="progress">\
+			<div class="progress-bar" id="progress-bar-id" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">0%</div>\
 			</div>\
 			</div>',
 			message,
@@ -155,11 +165,25 @@ function addPhoto(albumName) {
                 xmlhttpLoder(false);
                 return alert('There was an error uploading your photo: ', err.message);
             }
-        });
+        }).on('httpUploadProgress', function(evt) {
+	
+			document.getElementById("progress-id").style.display = "block";
+			document.getElementById('progress-content').innerHTML = evt.key.split("/")[1]
+			elem = document.getElementById('progress-bar-id');
+			elem.style.width =  parseInt((evt.loaded * 100) / evt.total)+'%';
+			elem.innerHTML = parseInt((evt.loaded * 100) / evt.total)+'%';
+			elem.setAttribute('aria-valuenow', parseInt((evt.loaded * 100) / evt.total)+'%');
+			console.log("Uploaded :: " + parseInt((evt.loaded * 100) / evt.total)+'%');
+			}).send(function(err, data) {
+			document.getElementById("progress-id").style.display = "none";
+			document.getElementById("success-alert").style.display = "block";
+			document.getElementById('success-content').innerHTML = "<strong>Successfully Uploaded! :: Total "+(i+1)+" Files Uploaded</strong>"
+			viewAlbum(albumName);
+		});
     }
     xmlhttpLoder(false);
-    alert('Successfully uploaded photo.');
-    viewAlbum(albumName);
+    //alert('Successfully uploaded photo.');
+    
 }
 
 
