@@ -67,8 +67,15 @@ validateUser();
 $("#viewer").on('change', '.custom-file-input', function () {
   $(this).siblings(".custom-file-label").addClass("selected").html('Files('+$(this).prop('files').length+')');
 });
+
 })();
+
+window.onbeforeunload = function(event) {
+        return "";
+}
+
 </script>
+
 
 </body>
 </html>
